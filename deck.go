@@ -4,7 +4,6 @@ import "fmt"
 
 type deck []string
 
-// anytime someone returns newDeck they are gonna return a type of value of deck
 func newDeck() deck {
 	cards := deck{}
 
@@ -24,4 +23,9 @@ func (d deck) print () {
 	for i, card := range d {
 		fmt.Println(i, card)
 	}
+}
+
+// (deck, deck) tells go we are gonna return two values of type deck
+func deal(d deck, handSize int) (deck, deck) {
+	return d[:handSize], d[handSize:]
 }
