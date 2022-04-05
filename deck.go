@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
-
+import (
+	"fmt"
+	"strings"
+)
 type deck []string
 
 func newDeck() deck {
@@ -25,7 +27,12 @@ func (d deck) print () {
 	}
 }
 
-// (deck, deck) tells go we are gonna return two values of type deck
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
+}
+
+// take a deck and return a full string representation of it
+func (d deck) toString() string {
+	// turn our deck into a slice of strings
+	return strings.Join([]string(d), ",")
 }
