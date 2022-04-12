@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -61,13 +62,16 @@ func newDeckFromFile(filename string) deck {
 }
 
 func (d deck) shuffle() {
-	for i := range d {
-		// Intn returns, as an int, a non-negative pseudo-random number
-		newPosition := rand.Intn(len(d) - 1)
+	// UnixNano generates a different int64 number everytime you start up a program which is used as a seed
+	// The seed is used to generate a NewSource object
+	// We use the object as the basis of our random number generator
+	source := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(source)
 
-		//using this to swap elements
-		// take whatever is at newPosition and assign it to i
-		// take whatever is at i and assign it to newPosition
+	for i := range d {
+		newPosition := r.Intn(len(d) - 1)
+
+
 		d[i], d[newPosition] = d[newPosition], d[i]
 	}
 }
