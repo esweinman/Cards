@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"strings"
 )
 
 func main() {
-	cards := newDeckFromFile("my")
+	cards := newDeck()
+	cards.shuffle()
 	cards.print()
 }
 
@@ -47,16 +49,25 @@ func (d deck) saveToFile(filename string) error {
 	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
 }
 
-// convert byte slice file on hard drive int a deck
 func newDeckFromFile(filename string) deck {
 	bs, err := ioutil.ReadFile(filename)
 	if err !=nil {
-		// Option #1 - log the error and return a call to newDeck()
-		// Option #2 - log the error and entirely quit the program
-	fmt.Println("Error:", err)
-	os.Exit(1)		
+		fmt.Println("Error:", err)
+		os.Exit(1)		
 	}
 
 	s := strings.Split(string(bs), ",") 
 	return deck(s) 
+}
+
+func (d deck) shuffle() {
+	for i := range d {
+		// Intn returns, as an int, a non-negative pseudo-random number
+		newPosition := rand.Intn(len(d) - 1)
+
+		//using this to swap elements
+		// take whatever is at newPosition and assign it to i
+		// take whatever is at i and assign it to newPosition
+		d[i], d[newPosition] = d[newPosition], d[i]
+	}
 }
